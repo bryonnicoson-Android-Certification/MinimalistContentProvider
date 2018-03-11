@@ -24,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@id/textview"
         app:layout_constraintEnd_toStartOf="@id/button_display_first"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="List all words" />
+        android:text="@string/list_all_words" />
 
     <Button
         app:layout_constraintTop_toBottomOf="@id/textview"
@@ -34,6 +34,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickDisplayEntries"
-        android:text="List first word" />
+        android:text="@string/list_first_word" />
 
 </android.support.constraint.ConstraintLayout>
