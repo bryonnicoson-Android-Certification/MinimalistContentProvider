@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MinimalistContentProvider</string>
+    <string name="response">response</string>
 </resources>
