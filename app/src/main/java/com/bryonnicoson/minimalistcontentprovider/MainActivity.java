@@ -1,5 +1,7 @@
 package com.bryonnicoson.minimalistcontentprovider;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,17 +24,43 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickDisplayEntries(View view){
 
-        switch(view.getId()){
+        // declare and assign query argument values
+        String queryUri = Contract.CONTENT_URI.toString();
+        String[] projection = new String[] {Contract.CONTENT_PATH};
+        String selectionClause;
+        String selectionArgs[];
+        String sortOrder = null;
+
+        switch (view.getId()) {
             case R.id.button_display_all:
-                Log.d(TAG, "Yay, " + R.id.button_display_all + " was clicked!");
+                selectionClause = null;
+                selectionArgs = null;
                 break;
             case R.id.button_display_first:
-                Log.d(TAG, "Yay, " + R.id.button_display_first + " was clicked!");
+                selectionClause = Contract.WORD_ID + " = ?";
+                selectionArgs = new String[] {"0"};
                 break;
             default:
-                Log.wtf(TAG, "Error. This should never happen.");
+                selectionClause = null;
+                selectionArgs = null;
         }
 
-        mTextview.append("\nGo, Cubs, Go!");
+        Cursor cursor = getContentResolver().query(Uri.parse(queryUri),
+                projection, selectionClause, selectionArgs, sortOrder);
+
+        // process cursor result
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(projection[0]);
+                do {
+                    String word = cursor.getString(columnIndex);
+                    mTextview.append("\n" + word);
+                } while (cursor.moveToNext());
+            } else {
+                Log.d(TAG, "onClickDisplayEntries " + getString(R.string.no_data_returned));
+                mTextview.append("\n" + getString(R.string.no_data_returned));
+            }
+        }
     }
 }
